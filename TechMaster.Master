@@ -1,0 +1,65 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="TechMaster.master.cs" Inherits="Telkom.TechMaster" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <title>Technician/Support Portal</title>
+    <asp:ContentPlaceHolder ID="headContent" runat="server"></asp:ContentPlaceHolder>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: #f4f6f8; }
+        .sidebar { width: 240px; background: #0052cc; color: white; height: 100vh; position: fixed; padding: 20px; }
+        .sidebar h2 { margin-bottom: 20px; font-size: 1.5rem; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { margin: 15px 0; }
+        .sidebar ul li a { color: white; text-decoration: none; font-weight: bold; }
+        .sidebar ul li a:hover { text-decoration: underline; }
+        .main-content { margin-left: 260px; padding: 20px; }
+        .dashboard-card { background: white; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card-header { font-weight: bold; margin-bottom: 0.5rem; color: #1e293b; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 5px; }
+        .btn-primary { background: #0052cc; color: white; }
+        .btn-primary:hover { background: #003d99; }
+        .btn-secondary { background: #00a651; color: white; }
+        .btn-secondary:hover { background: #008a44; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 0.5rem; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: #f1f5f9; }
+        .alert-high { color: #ef4444; font-weight: bold; }
+        .alert-medium { color: #f59e0b; font-weight: bold; }
+        .alert-low { color: #10b981; font-weight: bold; }
+        
+        /* User info in sidebar */
+        .user-info { 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid #003d99; 
+        }
+        .user-info span { 
+            font-size: 14px; 
+            opacity: 0.9; 
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true" />
+        <div class="sidebar">
+            <h2>Tech Support Portal</h2>
+            <div class="user-info">
+                <span>Welcome, <asp:Label ID="lblUsername" runat="server" Text="User"></asp:Label></span>
+            </div>
+            <ul>
+                <li><a href="WebForm1.aspx">Dashboard</a></li>
+                <li><a href="EscalatedQueue.aspx">Escalated Cases</a></li>
+                <li><a href="CommunityForumMngmt.aspx">Community Forum</a></li>
+                <li><a href="PredictiveAlerts.aspx">Predictive Alerts</a></li>
+                <li><asp:LinkButton ID="lnkLogout" runat="server" OnClick="lnkLogout_Click" style="color: white; text-decoration: none; font-weight: bold;">Logout</asp:LinkButton></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

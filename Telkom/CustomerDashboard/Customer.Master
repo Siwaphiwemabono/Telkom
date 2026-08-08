@@ -1,0 +1,350 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Customer.master.cs" Inherits="Telkom.CustomerDashboard.Customer" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TelkomX Customer Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --telkom-blue: #0077CC;
+            --telkom-green: #99FF33;
+            --telkom-dark-blue: #003366;
+            --telkom-white: #FFFFFF;
+            --telkom-soft-white: #F5F7FB;
+            --telkom-black: #0A0A0A;
+            --telkom-dark-gray: #1F1F1F;
+            --gradient-bg: linear-gradient(135deg, #004080 0%, #66CC00 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: var(--telkom-soft-white);
+            color: var(--telkom-dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+            transition: grid-template-columns 0.3s;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--gradient-bg);
+            color: var(--telkom-white);
+            padding: 20px 0;
+            position: fixed;
+            width: 250px;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 1000;
+            transform: translateX(0);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-100%);
+        }
+
+        .logo {
+            padding: 20px;
+            border-bottom: var(--glass-border);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--telkom-white);
+            text-decoration: none;
+            font-weight: 600;
+            gap: 12px;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--telkom-green);
+            transform: translateX(5px);
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            grid-column: 2;
+            padding: 30px;
+            background: var(--telkom-white);
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--telkom-dark-gray);
+        }
+
+        .sidebar-toggle {
+            font-size: 1.5rem;
+            color: var(--telkom-dark-gray);
+            cursor: pointer;
+            display: none;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--telkom-blue);
+            color: var(--telkom-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .notifications {
+            position: relative;
+        }
+
+        .notifications .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--telkom-green);
+            color: var(--telkom-dark-gray);
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .welcome-section h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--telkom-dark-gray);
+            margin-bottom: 15px;
+        }
+
+        .welcome-section p {
+            font-size: 1.1rem;
+            color: var(--telkom-dark-gray);
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .welcome-section li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            color: var(--telkom-dark-gray);
+            margin-bottom: 10px;
+        }
+
+        .welcome-section i {
+            color: var(--telkom-green);
+        }
+
+        /* Content Placeholder */
+        .content-placeholder {
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                transform: translateX(-100%);
+                z-index: 2000;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .main-content {
+                grid-column: 1;
+                padding: 20px;
+            }
+
+            .header {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header h2 {
+                font-size: 1.5rem;
+            }
+
+            .welcome-section h3 {
+                font-size: 1.4rem;
+            }
+
+            .welcome-section p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-bolt"></i> Telkom<span style="color: var(--telkom-green);">X</span></h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="../CustomerDash.aspx" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="/CustomerDashboard/AITroubleshooter.aspx" class="nav-link"><i class="fas fa-robot"></i> AI Troubleshooter</a></li>
+                <li class="nav-item"><a href="/CustomerDashboard/MySupportQueue.aspx" class="nav-link"><i class="fas fa-ticket-alt"></i> Support Queue</a></li>
+                <li class="nav-item"><a href="/CustomerDashboard/CommunityForum.aspx" class="nav-link"><i class="fas fa-users"></i> Community Forum</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <span class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></span>
+                <h2>Welcome back, <asp:Label ID="lblUserName" runat="server" Text="User"></asp:Label>!</h2>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notificationBadge" runat="server">0</span>
+                    </div>
+                    <div class="user-avatar">
+                        <asp:Label ID="lblUserInitials" runat="server" Text="UI"></asp:Label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content Placeholder -->
+            <div class="content-placeholder">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+            </div>
+        </main>
+    </div>
+</form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('sidebarToggle');
+
+            toggle.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+            });
+
+            // Set active nav link based on current page
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Logout functionality (placeholder)
+            document.getElementById('logout').addEventListener('click', function (e) {
+                e.preventDefault();
+                alert('Logging out...');
+                window.location.href = '/LandingPage.aspx';
+            });
+        });
+    </script>
+</body>
+</html>
